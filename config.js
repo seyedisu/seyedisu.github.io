@@ -1,5 +1,5 @@
 const BLOG_CONFIG = {
-  title: "Seyed",
+  title: "seyedisu",
   subtitle: "نوشته‌ها",
   language: "fa",
   author: "seyed",
