@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">وبلاگ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" id="brand-link" href="#"></a>
+  <div class="nav-right">
+    <button class="nav-btn" id="about-btn">درباره</button>
+    <button class="nav-btn" id="toggle-view">همه نوشته‌ها</button>
+    <button class="theme-btn" id="theme-btn" title="تغییر تم">☀</button>
+  </div>
+</nav>
+
+<!-- ── LIST VIEW ── -->
+<div class="view active" id="list-view">
+  <div class="list-inner">
+    <!-- Profile strip -->
+    <div class="profile-strip" id="profile-strip"></div>
+
+    <!-- Category filter -->
+    <div class="category-bar" id="category-bar"></div>
+
+    <!-- Posts -->
+    <div class="posts-scroll">
+      <div id="posts-container"></div>
+    </div>
+
+    <!-- List pagination -->
+    <div class="list-pagination" id="list-pagination" style="display:none">
+      <button class="list-page-btn" id="list-prev">←</button>
+      <span class="list-page-indicator" id="list-page-indicator"></span>
+      <button class="list-page-btn" id="list-next">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── READ VIEW ── -->
+<div class="view" id="read-view">
+  <div class="read-header">
+    <div class="read-title" id="read-title"></div>
+    <div class="read-meta">
+      <span id="read-date"></span>
+      <span id="read-category"></span>
+    </div>
+  </div>
+
+  <div class="page-content" id="page-content">
+    <div class="page-content-inner">
+      <div class="page-text" id="page-text"></div>
+    </div>
+  </div>
+
+  <div class="read-footer">
+    <div class="page-nav">
+      <button class="page-btn" id="btn-prev" title="صفحه قبل">←</button>
+      <span class="page-indicator" id="page-indicator"></span>
+      <button class="page-btn" id="btn-next" title="صفحه بعد">→</button>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="key-hint">
+      <kbd>←</kbd><kbd>→</kbd> صفحه
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT VIEW ── -->
+<div class="view" id="about-view">
+  <div class="about-card" id="about-card"></div>
+</div>
+
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
