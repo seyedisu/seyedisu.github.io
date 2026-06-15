@@ -2,11 +2,11 @@ const BLOG_CONFIG = {
   title: "Seyed",
   subtitle: "نوشته‌ها",
   language: "fa",
-  author: "Seyed Parsam",
+  author: "seyed",
 
   profile: {
-    name: "سید پارسام",
-    bio: "نویسنده‌ای که به کلمات اعتقاد دارد. درباره‌ی زندگی، تکنولوژی و آنچه بینشان است می‌نویسم.",
+    name: "seyed",
+    bio: "Economist Programmer",
     avatar: "https://avatars.githubusercontent.com/u/293959093",
     links: [
       { label: "GitHub", url: "https://github.com/seyedisu", icon: "github" },
