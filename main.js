@@ -7,6 +7,11 @@
 
   const config = BLOG_CONFIG;
 
+  /* ── DIRECTION ─────────────────────────────
+     Determine reading direction from the language,
+     not from a hardcoded arrow/swipe assumption. */
+  const isRTL = (config.language === 'fa') || (document.documentElement.dir === 'rtl');
+
   /* ── STATE ─────────────────────────────── */
   let currentPost    = null;
   let currentPage    = 0;       // page within a post
@@ -208,6 +213,23 @@
     if (currentPage < currentPost.pages.length - 1) { currentPage++; renderPage(); }
   });
 
+  /* ── PAGE-NAV ARROW DIRECTION ───────────────
+     In LTR, "previous" sits to the left (←) and "next" to the right (→).
+     In RTL, "previous" sits to the right (→) and "next" to the left (←),
+     since RTL reading moves from right to left. */
+  function applyArrowDirection() {
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    if (isRTL) {
+      prevBtn.textContent = '→';
+      nextBtn.textContent = '←';
+    } else {
+      prevBtn.textContent = '←';
+      nextBtn.textContent = '→';
+    }
+  }
+  applyArrowDirection();
+
   /* ── NAV BUTTONS ────────────────────────── */
   document.getElementById('brand-link').addEventListener('click', e => {
     e.preventDefault();
@@ -227,8 +249,15 @@
   /* ── KEYBOARD ───────────────────────────── */
   document.addEventListener('keydown', e => {
     if (!document.getElementById('read-view').classList.contains('active')) return;
-    if (e.key === 'ArrowLeft')  document.getElementById('btn-next').click();
-    if (e.key === 'ArrowRight') document.getElementById('btn-prev').click();
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+
+    // ArrowLeft visually points left, ArrowRight visually points right.
+    // Map to next/prev based on which way reading progresses.
+    const pressedLeft = e.key === 'ArrowLeft';
+    const goNext = isRTL ? pressedLeft : !pressedLeft;
+
+    if (goNext) document.getElementById('btn-next').click();
+    else document.getElementById('btn-prev').click();
   });
 
   /* ── SWIPE ──────────────────────────────── */
@@ -240,7 +269,13 @@
     touchX = null;
     if (Math.abs(dx) < 50) return;
     if (!document.getElementById('read-view').classList.contains('active')) return;
-    if (dx < 0) document.getElementById('btn-next').click();
+
+    // In RTL (Persian books), swiping the finger to the right turns to
+    // the next page; swiping left goes back. In LTR it's the opposite.
+    const swipedRight = dx > 0;
+    const goNext = isRTL ? swipedRight : !swipedRight;
+
+    if (goNext) document.getElementById('btn-next').click();
     else document.getElementById('btn-prev').click();
   });
 
