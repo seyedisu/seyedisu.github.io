@@ -98,6 +98,8 @@
       bar.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
       listPage = 0;
       renderList();
+      if (activeCategory === 'همه') clearHash();
+      else setHash(encodeURIComponent(activeCategory));
     });
   }
 
@@ -155,26 +157,91 @@
     if (listPage < totalPages - 1) { listPage++; renderList(); }
   });
 
+  /* ── HASH ROUTING ───────────────────────────
+     Lets a post be linked directly via a URL fragment,
+     e.g. seyedisu.github.io/#3 opens post id=3,
+     and #about opens the about page. */
+  let suppressNextHashChange = false;
+
+  function setHash(value) {
+    if (window.location.hash.slice(1) === value) return;
+    suppressNextHashChange = true;
+    window.location.hash = value;
+  }
+
+  function clearHash() {
+    if (!window.location.hash) return;
+    suppressNextHashChange = true;
+    // Remove the hash without leaving a trailing '#' or adding a history entry jump.
+    window.location.hash = '';
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+
+  function openPostById(id) {
+    const post = config.posts.find(p => p.id === id);
+    if (post) { openPost(post, true); return true; }
+    return false;
+  }
+
+  function applyCategoryById(name) {
+    const cats = config.categories || ['همه'];
+    if (!cats.includes(name)) return false;
+    activeCategory = name;
+    listPage = 0;
+    document.querySelectorAll('.cat-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === name);
+    });
+    renderList();
+    showList(true); // true = keep the hash as-is, don't clear it
+    return true;
+  }
+
+  function applyHashRoute() {
+    const hash = window.location.hash.slice(1); // remove '#'
+
+    if (!hash) { showList(); return; }
+
+    if (hash === 'about') { showAbout(); return; }
+
+    if (/^\d+$/.test(hash)) {
+      const id = parseInt(hash, 10);
+      if (openPostById(id)) return;
+    }
+
+    const decoded = decodeURIComponent(hash);
+    if (decoded !== 'همه' && applyCategoryById(decoded)) return;
+
+    // Unknown or invalid hash — fall back to the list.
+    showList();
+  }
+
+  window.addEventListener('hashchange', () => {
+    if (suppressNextHashChange) { suppressNextHashChange = false; return; }
+    applyHashRoute();
+  });
+
   /* ── VIEWS ──────────────────────────────── */
   function showView(id) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
 
-  function showList() {
+  function showList(keepHash) {
     showView('list-view');
     document.getElementById('toggle-view').style.display = 'none';
     document.getElementById('about-btn').textContent = 'درباره';
+    if (!keepHash) clearHash();
   }
 
   function showAbout() {
     showView('about-view');
     document.getElementById('toggle-view').style.display = 'none';
     document.getElementById('about-btn').textContent = '← برگشت';
+    setHash('about');
   }
 
   /* ── READ ───────────────────────────────── */
-  function openPost(post) {
+  function openPost(post, fromHash) {
     currentPost = post;
     currentPage = 0;
     document.getElementById('read-title').textContent = post.title;
@@ -185,6 +252,7 @@
     btn.textContent = '← بازگشت';
     btn.style.display = '';
     renderPage();
+    if (!fromHash) setHash(`${post.id}`);
   }
 
   function renderPage() {
@@ -289,7 +357,7 @@
     buildAboutView();
     buildCategories();
     renderList();
-    showList();
+    applyHashRoute();
   }
 
   init();
