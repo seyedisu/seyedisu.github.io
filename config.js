@@ -10,7 +10,7 @@ const BLOG_CONFIG = {
     avatar: "https://avatars.githubusercontent.com/u/293959093",
     links: [
       { label: "GitHub", url: "https://github.com/seyedisu", icon: "github" },
-      { label: "Instagram", url: "https://instagram.com/this.is.seyed.parsa", icon: "instagram" },
+      { label: "Instagram", url: "https://instagram.com/seyedisu", icon: "instagram" },
       { label: "ble", url: "https://ble.ir/seyedisu", icon: "ble" }
     ]
   },
