@@ -236,7 +236,7 @@
   function showAbout() {
     showView('about-view');
     document.getElementById('toggle-view').style.display = 'none';
-    document.getElementById('about-btn').textContent = '← برگشت';
+    document.getElementById('about-btn').textContent = 'بازگشت ←';
     setHash('about');
   }
 
@@ -249,7 +249,7 @@
     document.getElementById('read-category').textContent = post.category;
     showView('read-view');
     const btn = document.getElementById('toggle-view');
-    btn.textContent = '← بازگشت';
+    btn.textContent = 'بازگشت ←';
     btn.style.display = '';
     renderPage();
     if (!fromHash) setHash(`${post.id}`);
